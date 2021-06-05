@@ -87,7 +87,7 @@ extension SafariViewPresenter {
             // There is a problem that page loading and parallel push animation are not working when a modifier is attached to the view in a `List`.
             // As a workaround, use a `rootViewController` of the `window` for presenting.
             // (Unlike the other view controllers, a view controller hosted by a cell doesn't have a parent, but has the same window.)
-            var presentingViewController = uiViewController.view.window?.rootViewController
+            var presentingViewController = uiViewController.parentSplitViewController() ?? uiViewController.view.window?.rootViewController
             presentingViewController = presentingViewController?.presentedViewController ?? presentingViewController ?? uiViewController
             
             presentingViewController?.show(safariViewController, sender: nil)
@@ -139,6 +139,15 @@ extension SafariViewPresenter {
         func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
             resetItemBindingAndHandleDismissal()
         }
+    }
+}
+
+fileprivate extension UIViewController {
+    func parentSplitViewController() -> UISplitViewController? {
+        sequence(first: self, next: { $0?.parent })
+            .first {
+                $0 is UISplitViewController
+            } as! UISplitViewController
     }
 }
 
