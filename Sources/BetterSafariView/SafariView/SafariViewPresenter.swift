@@ -89,7 +89,9 @@ extension SafariViewPresenter {
             // (Unlike the other view controllers, a view controller hosted by a cell doesn't have a parent, but has the same window.)
             var presentingViewController = uiViewController.view.window?.rootViewController
             presentingViewController = presentingViewController?.presentedViewController ?? presentingViewController ?? uiViewController
-            presentingViewController?.present(safariViewController, animated: true)
+            
+            presentingViewController?.show(safariViewController, sender: nil)
+//            presentingViewController?.present(safariViewController, animated: true)
         }
         
         private func updateSafariViewController(with item: Item) {
